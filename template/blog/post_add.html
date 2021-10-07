@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="comment_el" style="background: #ffffff">
+            <div class="rounded-circle">NEW</div>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+
+                    <div class="mb-3">
+
+                        <label for="address">{{ field.label_tag }}</label>
+                        {{ field }}
+                        <div class="invalid-feedback">
+                            {% if field.errors %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+                <input type="submit" value="Добавить">
+            </form>
+            {#            <div class="comment_body">#}
+            {#                <h2> {{ article.article_title }}</h2>#}
+            {#                <p>{{ article.article_text }}</p>#}
+            {#            </div>#}
+            {#            <div class="comment_date">#}
+            {#                <em>{{ article.pub_date }}</em>#}
+            {#            </div>#}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+from django.apps import AppConfig
+
+
+class MainpageConfig(AppConfig):
+    name = 'mainPage'
+    verbous_name = 'Main'

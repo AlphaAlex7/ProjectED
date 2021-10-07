@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
+    <div class="container">
+        <div class="comment_el" style="background: #ffffff">
+            <div class="comment_body">
+                <h2> {{ post.title }}</h2>
+                <p>{{ post.text }}</p>
+            </div>
+            <div class="comment_date">
+                <em>{{ post.date_pub }}</em>
+            </div>
+        </div>
+    </div>
+    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
+    <div class="container">
+        <div id="comment" class="comment">
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <div class="input-group mb-3">
+                                <img src="https://im0-tub-ru.yandex.net/i?id=9b13bfab8efee230e90028651a31b640&n=13"
+                                     class="rounded float-start" style="height: 25px; width: 25px">
+                                <h5 class="mb-0" style="margin-left: 10px">{{ comment.author }}</h5>
+                            </div>
+                            <p class="card-text mb-auto" style="
+    word-break: break-all; padding-bottom: 10px">{{ comment.text }}</p>
+                            <div class="mb-1 text-muted">{{ comment.date_pub }}</div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">back</a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            {% else %}
+                Комментарии не найдены
+            {% endif %}
+        </div>
+    </div>
+    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
+{#    <div class="container">#}
+{#        <form class="row g-3" style="margin-bottom: 20px" action="{% url 'articles:leave_comment' article.id %}"#}
+{#              method="post">#}
+{#            {% csrf_token %}#}
+{#            <div class="input-group mb-3">#}
+{#                <span class="input-group-text" id="basic-addon1"></span>#}
+{#                <input type="text" class="form-control" required placeholder="Имя" name="name">#}
+{#            </div>#}
+{#            <div class="input-group">#}
+{#                <span class="input-group-text"></span>#}
+{#                <textarea class="form-control" name="text" required="" placeholder="текст комента"></textarea>#}
+{#            </div>#}
+{#            <button type="submit" class="btn btn-secondary" style="max-width: 200px">Оставить коммент</button>#}
+{#        </form>#}
+{#    </div>#}
+{% endblock %}
