@@ -4,15 +4,15 @@
 
 {% block content %}
     <div class="container">
-        <div class="comment_el" style="background: #ffffff">
-            <div class="rounded-circle">NEW</div>
-            <form method="post">
+        <div class="row" style="background: #ffffff">
+            <div class="rounded-3 border-2 border-primary mx-3 my-2" style="border: solid; width: auto">{{ user }}</div> {# надо это убрать в угол #}
+            <form class="needs-validation" method="post">
                 {% csrf_token %}
                 {% for field in form %}
 
                     <div class="mb-3">
 
-                        <label for="address">{{ field.label_tag }}</label>
+                        <label class="mb-2" for="address">{{ field.label_tag }}</label>
                         {{ field }}
                         <div class="invalid-feedback">
                             {% if field.errors %}
@@ -27,7 +27,7 @@
                     </div>
                 {% endfor %}
 
-                <input type="submit" value="Добавить">
+                <input class="btn btn-outline-success" type="submit" value="Добавить">
             </form>
             {#            <div class="comment_body">#}
             {#                <h2> {{ article.article_title }}</h2>#}

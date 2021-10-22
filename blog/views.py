@@ -54,9 +54,9 @@ class AddPost(LoginRequiredMixin, CreateView, DataMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context_mixin = self.get_user_context(title="Новая статья")
         context = dict(list(context.items()) + list(context_mixin.items()))
+        context["user"] = self.request.user
 
         print(context)
         return context
