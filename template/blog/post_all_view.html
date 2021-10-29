@@ -44,9 +44,22 @@
                    href="?page={{ page_obj.previous_page_number }}">Back</a>
             </li>
         {% endif %}
+        {% for p in paginator.page_range %}
+
+            {% if page_obj.number == p %}
+                <li class="btn btn-outline-secondary mx-2 mb-2 py-2 px-3">{{ p }}</li>
+
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                <li>
+                    <a class="btn btn-outline-primary mx-2 mb-2 py-2 px-2" href="?page={{ p }}">{{ p }}</a>
+                </li>
+            {% endif %}
+
+        {% endfor %}
         {% if page_obj.has_next %}
             <li>
-                <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4"
+                   href="?page={{ page_obj.next_page_number }}">Next</a>
             </li>
         {% endif %}
         </ul>

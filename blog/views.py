@@ -44,7 +44,7 @@ class PostAllView(ListView, DataMixin):
         context_mixin = self.get_user_context(title="Статьи")
         context = dict(list(context.items()) + list(context_mixin.items()))
 
-        print(context["posts"][0].get_comment_counts())
+        print(context["paginator"].__dict__)
         return context
 
 
