@@ -3,9 +3,9 @@ from django.core.paginator import Paginator
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
-from .models import PostModel, PostCategory, PostComment
+from .models import PostModel, PostComment
 from .forms import AddPostForm
-from .utils import DataMixin
+from ProjectED.utils import DataMixin
 
 
 class PostOneView(DetailView, DataMixin):
@@ -15,9 +15,7 @@ class PostOneView(DetailView, DataMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context_mixin = self.get_user_context(title="Статьи")
-        context = dict(list(context.items()) + list(context_mixin.items()))
+        context = super().get_menu_context(**context, title="Статьи")
 
         paginator = Paginator(PostComment.objects.filter(post=self.kwargs['pk']), 2)
         if "page" in self.request.GET:
@@ -40,9 +38,7 @@ class PostAllView(ListView, DataMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context_mixin = self.get_user_context(title="Статьи")
-        context = dict(list(context.items()) + list(context_mixin.items()))
+        context = super().get_menu_context(**context, title="Статьи")
 
         print(context["paginator"].__dict__)
         return context
@@ -54,8 +50,7 @@ class AddPost(LoginRequiredMixin, CreateView, DataMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context_mixin = self.get_user_context(title="Новая статья")
-        context = dict(list(context.items()) + list(context_mixin.items()))
+        context = super().get_menu_context(**context, title="Новая статья")
         context["user"] = self.request.user
 
         print(context)

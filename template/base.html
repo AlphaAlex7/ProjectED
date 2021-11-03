@@ -9,33 +9,8 @@
     <title>{% block title %}Мой Сайт{% endblock %}</title>
 </head>
 <body class="d-flex flex-column h-100">
+{% include 'header.html' %}
 {% block mainmenu %}
-    <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"></svg>
-        </a>
-
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        {% if menu %}
-            {% for item in menu%}
-            <li><a href="{{item.url_name}}" class="nav-link px-2 link-dark">{{item.title}}</a></li>
-            {% endfor %}
-        {% else %}
-            <li><a href="/" class="nav-link px-2 link-dark">Главная</a></li>
-        {% endif %}
-{#            <li><a href="{% url 'articles:index'%}" class="nav-link px-2 link-dark">Блог</a></li>#}
-{#            <li><a class="nav-link px-2 link-light">Pricing</a></li>#}
-{#            <li><a class="nav-link px-2 link-light">test</a></li>#}
-{#            <li><a class="nav-link px-2 link-dark">О нас</a></li>#}
-        </ul>
-
-        <div class="col-md-3 text-end">
-            <button disabled="True" type="button" class="btn btn-outline-primary me-2">Login</button>
-            <button disabled="True" type="button" class="btn btn-primary">Sign-up</button>
-        </div>
-    </header>
-</div>
 {% endblock %}
 <section>
 
