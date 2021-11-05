@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
@@ -23,7 +23,7 @@
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
                             <div class="input-group mb-3">
-                                <img src="https://im0-tub-ru.yandex.net/i?id=9b13bfab8efee230e90028651a31b640&n=13"
+                                <img src="{% static 'icon/svg/fi-rr-user.svg' %}"
                                      class="rounded float-start" style="height: 25px; width: 25px">
                                 <h5 class="mb-0" style="margin-left: 10px">{{ comment.author }}</h5>
                             </div>
