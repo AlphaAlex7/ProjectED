@@ -39,8 +39,6 @@ class PostAllView(ListView, DataMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context = super().get_menu_context(**context, title="Статьи")
-
-        print(context["paginator"].__dict__)
         return context
 
 

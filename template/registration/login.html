@@ -34,7 +34,16 @@
                         </div>
                     {% endfor %}
 
-                    <input class="btn btn-outline-success" type="submit" value="Войти">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <div class="mb-3">
+                            <label class="mb-2 text-danger">{{ error }}</label>
+                            </div>
+                        {% endfor %}
+
+                    {% endfor %}
+                    <input class="btn btn-outline-success" type="submit" value="Подтвердить">
+                    <a href="{% url 'registration' %}" type="button" class="btn btn-outline-primary me-2">Зарегистрироваться</a>
                 </form>
             {% endif %}
         </div>

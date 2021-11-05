@@ -18,7 +18,7 @@ class PostModel(models.Model):
     title = CharField(verbose_name="Заголовок", max_length=200)
     text = TextField(verbose_name="Текст")
     date_pub = DateTimeField(verbose_name="Дата публикации", auto_now_add=True)
-    author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author_post")
+    author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author")
     category = ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
                           related_name="category_post")
 
