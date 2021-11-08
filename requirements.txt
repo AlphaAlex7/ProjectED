@@ -2,3 +2,7 @@ Django==3.2
 django-cors-headers==3.10.0
 django-templated-mail==1.1.1
 djangorestframework==3.12.4
+Celery
+django-redis
+django-celery-beat
+django-celery-results
