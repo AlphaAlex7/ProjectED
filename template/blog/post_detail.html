@@ -1,13 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'blog/surround_element.html' %}
 {% load static %}
+
 {% block title %}{{ title }}{% endblock %}
 
-{% block content %}
-    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
+{% block page_content %}
+    <div class="col-md-8">
     <div class="container">
-        <div class="comment_el" style="background: #ffffff">
+        <div class="comment_el py-3" style="background: #ffffff">
             <div class="comment_body">
                 <h2> {{ post.title }}</h2>
+                {% if post.img_preview %}
+                <img class="img-fluid p-3" src="{{ post.img_preview.url }}" alt="lk" >
+                {% endif %}
                 <p>{{ post.text }}</p>
             </div>
             <div class="comment_date">
@@ -15,12 +19,12 @@
             </div>
         </div>
     </div>
-    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
     <div class="container">
+    <div class="border border-2 mb-2" style="border: solid"></div>
         <div id="comment" class="comment">
             {% if comments %}
                 {% for comment in comments %}
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-white">
                         <div class="col p-4 d-flex flex-column position-static">
                             <div class="input-group mb-3">
                                 <img src="{% static 'icon/svg/fi-rr-user.svg' %}"
@@ -45,20 +49,46 @@
             {% endif %}
         </div>
     </div>
-    <div class="b-example-divider" style="margin-top: 10px;margin-bottom: 10px"></div>
-{#    <div class="container">#}
-{#        <form class="row g-3" style="margin-bottom: 20px" action="{% url 'articles:leave_comment' article.id %}"#}
-{#              method="post">#}
-{#            {% csrf_token %}#}
-{#            <div class="input-group mb-3">#}
-{#                <span class="input-group-text" id="basic-addon1"></span>#}
-{#                <input type="text" class="form-control" required placeholder="Имя" name="name">#}
-{#            </div>#}
-{#            <div class="input-group">#}
-{#                <span class="input-group-text"></span>#}
-{#                <textarea class="form-control" name="text" required="" placeholder="текст комента"></textarea>#}
-{#            </div>#}
-{#            <button type="submit" class="btn btn-secondary" style="max-width: 200px">Оставить коммент</button>#}
-{#        </form>#}
-{#    </div>#}
+    <div class="container">
+    <div class="border border-2 " style="border: solid"></div>
+        {% if user.is_authenticated %}
+            <form class="row g-3 mt-3" style="margin-bottom: 20px" action="{% url 'blog:add_comment' post.id %}"
+                  method="post">
+                {% csrf_token %}
+                <div class="input-group m-1 px-4 py-2 rounded-2 bg-white w-auto border ">
+                    <img src="{% static 'icon/svg/fi-rr-user.svg' %}"
+                         class="rounded float-start" style="height: 25px; width: 25px">
+                    <h5 class="mb-0" style="margin-left: 10px">{{ user.username }}</h5>
+                </div>
+                {% for field in form_comment %}
+
+                    <div class="mb-3">
+
+                        <label class="mb-2" for="address">{{ field.label_tag }}</label>
+                        {{ field }}
+                        <div class="invalid-feedback">
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-secondary" style="max-width: 200px">Оставить коммент</button>
+            </form>
+        {% else %}
+            <div class="justify-content-center text-center m-3">
+                <h3>Вы не вошли</h3>
+                <p>Только авторизованные пользователи могут оставить комментарий.</p>
+                <p>Войдите или зарегестрируйтесь</p>
+                <a href="{% url 'login' %}" type="button" class="btn btn-outline-primary me-2">Вход</a>
+                <a href="{% url 'registration' %}" class="btn btn-primary">Регистрация</a>
+            </div>
+        {% endif %}
+    </div>
+    </div>
 {% endblock %}

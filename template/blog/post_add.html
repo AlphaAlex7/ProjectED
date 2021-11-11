@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'blog/surround_element.html' %}
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block content %}
-    <div class="container">
+{% block page_content %}
+    <div class="col-md-8">
         <div class="row" style="background: #ffffff">
             <div class="rounded-3 border-2 border-primary mx-3 my-2" style="border: solid; width: auto">{{ user }}</div> {# надо это убрать в угол #}
-            <form class="needs-validation" method="post">
-                {% csrf_token %}
+            <form class="needs-validation" method="post" enctype="multipart/form-data" >
+                {% csrf_token  %}
                 {% for field in form %}
 
                     <div class="mb-3">
@@ -26,7 +26,14 @@
 
                     </div>
                 {% endfor %}
+                {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <div class="mb-3">
+                            <label class="mb-2 text-danger">{{ error }}</label>
+                            </div>
+                        {% endfor %}
 
+                    {% endfor %}
                 <input class="btn btn-outline-success" type="submit" value="Добавить">
             </form>
             {#            <div class="comment_body">#}

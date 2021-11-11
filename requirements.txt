@@ -6,3 +6,4 @@ Celery
 django-redis
 django-celery-beat
 django-celery-results
+pillow

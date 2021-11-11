@@ -1,81 +1,78 @@
-{% extends 'base.html' %}
+{% extends 'blog/surround_element.html' %}
 {% load static %}
 {% block title %}{{ title }}{% endblock %}
 
-{% block content %}
-    <div class="container">
-
-        {% if posts %}
-            <div class="row mb-2 justify-content-center">
-                {% if user.is_authenticated %}
-                    <div class="col-7 row justify-content-end">
-                        <a class="col-2 btn btn-outline-primary mb-2 m-2" href="{% url 'add_post' %}">Добавить</a>
-
-                    </div>
-                {% endif %}
-                {% for post in posts %}
-                    <div class="col-md-7 p-1">
-                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative h-100">
-                            <div class="col p-4 d-flex flex-column position-static">
-                                {#                        {% if a.was_published_recent %}#}
-                                <strong class="d-inline-block mb-2 text-primary">{{ post.category.title }}</strong>
-                                <div class="inline-group text-decoration-none">
-                                    <p class="d-inline-block mb-2 text-dark">{{ post.author.username }} </p>
-                                    <p class="d-inline-block text-secondary">{{ post.date_pub|date:"d.M H:i" }}</p>
+{% block page_content %}
+        <div class="col-md-8">
+            {% if posts %}
+                <div class="row mb-2 justify-content-center">
+                    {% for post in posts %}
+                        <div class="col-md-11 p-1">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative h-100 bg-white">
+                                <div class="col p-4 d-flex flex-column position-static">
+                                    {#                        {% if a.was_published_recent %}#}
+                                    <strong class="d-inline-block mb-2 text-primary">{{ post.category.title }}</strong>
+                                    <div class="inline-group text-decoration-none">
+                                        <p class="d-inline-block mb-2 text-dark">{{ post.author.username }} </p>
+                                        <p class="d-inline-block text-secondary">{{ post.date_pub|date:"d.M H:i" }}</p>
+                                    </div>
+                                    {#                        {% endif %}#}
+                                    <h3 class="mb-0">{{ post.title }}</h3>
+                                    <div class="mb-1 text-muted"></div>
+                                    <p class="text-justify mb-auto h-50">{{ post.text|truncatewords:30 }}</p>
+                                    <a href="{% url 'blog:detail' post.pk %}" class="stretched-link"></a>
+                                    <a>
+                                        <img src="{% static 'icon/svg/fi-rr-comment.svg' %}" class="bi me-2" width="20"
+                                             height="20" role="img" title="Комментарии">
+                                        {{ post.get_comment_counts }}
+                                    </a>
                                 </div>
-                                {#                        {% endif %}#}
-                                <h3 class="mb-0">{{ post.title }}</h3>
-                                <div class="mb-1 text-muted"></div>
-                                <p class="card-text mb-auto h-50">{{ post.text|truncatewords:30 }}</p>
-                                <a href="{% url 'detail' post.pk %}" class="stretched-link">Показать полностью</a>
-                                <a>
-                                    <img src="{% static 'icon/svg/fi-rr-comment.svg' %}" class="bi me-2" width="20"
-                                         height="20" role="img" title="Комментарии">
-                                    {{ post.get_comment_counts }}
-                                </a>
+                                {#                            <div class="col-auto d-none d-lg-block">#}
+                                {#                                <svg class="bd-placeholder-img" width="200" height="250"#}
+                                {#                                     xmlns="http://www.w3.org/2000/svg"#}
+                                {#                                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"#}
+                                {#                                     focusable="false"><title></title>#}
+                                {#                                    <rect width="100%" height="100%" fill="#55595c"></rect>#}
+                                {#                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Открыть</text>#}
+                                {#                                </svg>#}
+                                {##}
+                                {#                            </div>#}
                             </div>
-                            {#                            <div class="col-auto d-none d-lg-block">#}
-                            {#                                <svg class="bd-placeholder-img" width="200" height="250"#}
-                            {#                                     xmlns="http://www.w3.org/2000/svg"#}
-                            {#                                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"#}
-                            {#                                     focusable="false"><title></title>#}
-                            {#                                    <rect width="100%" height="100%" fill="#55595c"></rect>#}
-                            {#                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Открыть</text>#}
-                            {#                                </svg>#}
-                            {##}
-                            {#                            </div>#}
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <ul class="pagination justify-content-center">
-        {% else %}
-            Нет статей
-        {% endif %}
-        {% if page_obj.has_previous %}
-            <li>
-                <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4"
-                   href="?page={{ page_obj.previous_page_number }}">Back</a>
-            </li>
-        {% endif %}
-        {% for p in paginator.page_range %}
+                    {% endfor %}
+                </div>
 
-            {% if page_obj.number == p %}
-                <li class="btn btn-outline-secondary mx-2 mb-2 py-2 px-3">{{ p }}</li>
-
-            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                <li>
-                    <a class="btn btn-outline-primary mx-2 mb-2 py-2 px-2" href="?page={{ p }}">{{ p }}</a>
-                </li>
+            {% else %}
+                Нет статей
             {% endif %}
 
-        {% endfor %}
-        {% if page_obj.has_next %}
-            <li>
-                <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4"
-                   href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-        {% endif %}
-        </ul>
-    </div>
+            {% if is_paginated %}
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li>
+                            <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4"
+                               href="?page={{ page_obj.previous_page_number }}">Back</a>
+                        </li>
+                    {% endif %}
+                    {% for p in paginator.page_range %}
+
+                        {% if page_obj.number == p %}
+                            <li class="btn btn-outline-secondary mx-2 mb-2 py-2 px-3">{{ p }}</li>
+
+                        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                            <li>
+                                <a class="btn btn-outline-primary mx-2 mb-2 py-2 px-2" href="?page={{ p }}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li>
+                            <a class="btn btn-outline-primary mx-4 mb-2 py-2 px-4"
+                               href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
 {% endblock %}

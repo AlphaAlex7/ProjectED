@@ -3,6 +3,9 @@ from .models import *
 
 
 class AddPostForm(forms.ModelForm):
+    img_preview = forms.ImageField(
+        label="Превью"
+    )
     category = forms.ModelChoiceField(
         widget=forms.Select(
             attrs={
@@ -13,7 +16,8 @@ class AddPostForm(forms.ModelForm):
             }
         ),
         queryset=PostCategory.objects.all(),
-        label="Категория")
+        label="Категория"
+    )
 
     title = forms.CharField(
         widget=forms.TextInput(
@@ -35,8 +39,23 @@ class AddPostForm(forms.ModelForm):
 
     class Meta:
         model = PostModel
-        fields = ('title', 'category', 'text')
+        fields = ('title', 'img_preview', 'category', 'text')
 
+
+class AddCommentForm(forms.ModelForm):
+    text = forms.CharField(
+        label="Комментарий",
+        widget=forms.Textarea(
+            attrs={
+                "class":
+                    "form-control"
+            }
+        )
+    )
+
+    class Meta:
+        model = PostComment
+        fields = ('text',)
 # 3
 # 4
 # 5

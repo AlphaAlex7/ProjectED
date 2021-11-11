@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import *
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 
 class PostCategory(models.Model):
@@ -21,9 +22,10 @@ class PostModel(models.Model):
     author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author")
     category = ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
                           related_name="category_post")
+    img_preview = ImageField(upload_to='posts/preview/%Y/%m/%d', null=True)
 
     def get_absolute_url(self):
-        return f"/posts/detail/{self.pk}/"
+        return reverse("blog:detail", kwargs={"pk": self.post_id})
 
     def get_comment_counts(self):
         return PostComment.objects.filter(post=self.pk).count()
@@ -42,6 +44,9 @@ class PostComment(models.Model):
     text = TextField(verbose_name="Комментарий")
     date_pub = DateTimeField(verbose_name="Дата публикации", auto_now_add=True)
     post = ForeignKey(PostModel, on_delete=models.CASCADE, verbose_name="Пост", related_name="post_id")
+
+    def get_absolute_url(self):
+        return reverse("blog:detail", kwargs={"pk": self.post_id})
 
     class Meta:
         verbose_name = "Комментарий"
