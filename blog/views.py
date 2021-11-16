@@ -9,6 +9,7 @@ from .forms import AddPostForm, AddCommentForm
 from ProjectED.utils import DataMixin
 from .utils import BlogMixin
 
+
 class AddComment(CreateView):
     form_class = AddCommentForm
 
@@ -18,10 +19,8 @@ class AddComment(CreateView):
         form.instance.post = PostModel.objects.get(pk=kwargs['post_id'])
         if form.is_valid():
             return self.form_valid(form)
-            # return redirect("blog:detail", pk=kwargs['post_id'])
         else:
             return self.form_invalid(form)
-            # return redirect("blog:detail", pk=kwargs['post_id'])
 
     def get(self, request, *args, **kwargs):
         if PostModel.objects.get(pk=kwargs['post_id']):
