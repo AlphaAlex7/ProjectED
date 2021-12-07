@@ -4,7 +4,8 @@ from .models import *
 
 class AddPostForm(forms.ModelForm):
     img_preview = forms.ImageField(
-        label="Превью"
+        label="Превью",
+        required=False
     )
     category = forms.ModelChoiceField(
         widget=forms.Select(

@@ -22,10 +22,10 @@ class PostModel(models.Model):
     author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author")
     category = ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
                           related_name="category_post")
-    img_preview = ImageField(upload_to='posts/preview/%Y/%m/%d', null=True)
+    img_preview = ImageField(upload_to='posts/preview/%Y/%m/%d', null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse("blog:detail", kwargs={"pk": self.post_id})
+        return reverse("blog:detail", kwargs={"pk": self.pk})
 
     def get_comment_counts(self):
         return PostComment.objects.filter(post=self.pk).count()
@@ -46,7 +46,7 @@ class PostComment(models.Model):
     post = ForeignKey(PostModel, on_delete=models.CASCADE, verbose_name="Пост", related_name="post_id")
 
     def get_absolute_url(self):
-        return reverse("blog:detail", kwargs={"pk": self.post_id})
+        return reverse("blog:detail", kwargs={"pk": self.pk})
 
     class Meta:
         verbose_name = "Комментарий"
