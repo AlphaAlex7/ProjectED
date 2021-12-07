@@ -46,7 +46,7 @@ class PostComment(models.Model):
     post = ForeignKey(PostModel, on_delete=models.CASCADE, verbose_name="Пост", related_name="post_id")
 
     def get_absolute_url(self):
-        return reverse("blog:detail", kwargs={"pk": self.pk})
+        return reverse("blog:detail", kwargs={"pk": self.post_id})
 
     class Meta:
         verbose_name = "Комментарий"

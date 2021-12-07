@@ -2,7 +2,7 @@
 {% block title %}Вход{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="text-center" style="background: #ffffff">
+        <div class="text-center pt-2 pb-5" style="">
             {% if user.is_authenticated %}
                 <div class="rounded-1 border-secondary border-1 w-50 text-center mx-auto my-2 " style="border-bottom: solid; width: auto">
                     <H1>Вы уже выполнили вход ...</H1>
@@ -42,8 +42,10 @@
                         {% endfor %}
 
                     {% endfor %}
-                    <input class="btn btn-outline-success" type="submit" value="Подтвердить">
-                    <a href="{% url 'registration' %}" type="button" class="btn btn-outline-primary me-2">Зарегистрироваться</a>
+                    <div class="justify-content-center p-3">
+                        <input class="btn btn-outline-success me-2" type="submit" value="Подтвердить">
+                        <a href="{% url 'registration' %}" type="button" class="btn btn-outline-primary">Регистрация</a>
+                    </div>
                 </form>
             {% endif %}
         </div>

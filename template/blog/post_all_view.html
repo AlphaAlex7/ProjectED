@@ -10,33 +10,39 @@
                         <div class="col-md-11 p-1">
                             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative h-100 bg-white">
                                 <div class="col p-4 d-flex flex-column position-static">
-                                    {#                        {% if a.was_published_recent %}#}
-                                    <strong class="d-inline-block mb-2 text-primary">{{ post.category.title }}</strong>
+                                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between">
+                                        <div class="col-md-auto justify-content-center" >
+                                            <strong class=" d-inline-block text-primary">{{ post.category.title }}</strong>
+                                        </div>
+                                        {% if user.id == post.author.id %}
+                                        <div class="col-md-auto mb-1 justify-content-center text-end">
+                                            <a>
+                                                <img src="{% static 'icon/svg/fi-rr-pencil.svg' %}" class="bi me-2" width="15"
+                                             height="15" role="img" title="Редактировать">
+                                            </a>
+                                            <a href="{% url 'blog:del' post.pk %}" >
+                                                <img src="{% static 'icon/svg/fi-rr-cross.svg' %}" class="bi me-2" width="15"
+                                             height="15" role="img" title="Удалить">
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                     <div class="inline-group text-decoration-none">
                                         <p class="d-inline-block mb-2 text-dark">{{ post.author.username }} </p>
                                         <p class="d-inline-block text-secondary">{{ post.date_pub|date:"d.M H:i" }}</p>
                                     </div>
-                                    {#                        {% endif %}#}
-                                    <h3 class="mb-0">{{ post.title }}</h3>
-                                    <div class="mb-1 text-muted"></div>
-                                    <p class="text-justify mb-auto h-50">{{ post.text|truncatewords:30 }}</p>
-                                    <a href="{% url 'blog:detail' post.pk %}" class="stretched-link"></a>
-                                    <a>
-                                        <img src="{% static 'icon/svg/fi-rr-comment.svg' %}" class="bi me-2" width="20"
-                                             height="20" role="img" title="Комментарии">
-                                        {{ post.get_comment_counts }}
-                                    </a>
+                                    <div class="position-relative">
+                                        <h3 class="mb-0">{{ post.title }}</h3>
+                                        <div class="mb-1 text-muted"></div>
+                                        <p class="text-justify mb-auto h-50">{{ post.text|truncatewords:30 }}</p>
+                                        <a href="{% url 'blog:detail' post.pk %}" class="stretched-link"></a>
+                                        <a>
+                                            <img src="{% static 'icon/svg/fi-rr-comment.svg' %}" class="bi me-2" width="20"
+                                                 height="20" role="img" title="Комментарии">
+                                            {{ post.get_comment_counts }}
+                                        </a>
+                                    </div>
                                 </div>
-                                {#                            <div class="col-auto d-none d-lg-block">#}
-                                {#                                <svg class="bd-placeholder-img" width="200" height="250"#}
-                                {#                                     xmlns="http://www.w3.org/2000/svg"#}
-                                {#                                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"#}
-                                {#                                     focusable="false"><title></title>#}
-                                {#                                    <rect width="100%" height="100%" fill="#55595c"></rect>#}
-                                {#                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Открыть</text>#}
-                                {#                                </svg>#}
-                                {##}
-                                {#                            </div>#}
                             </div>
                         </div>
                     {% endfor %}

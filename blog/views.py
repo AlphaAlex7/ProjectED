@@ -1,12 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import redirect
-from django.views.generic.list import ListView
+from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
-from .models import PostModel, PostComment, PostCategory
-from .forms import AddPostForm, AddCommentForm
+from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.list import ListView
+
 from ProjectED.utils import DataMixin
+from .forms import AddPostForm, AddCommentForm
+from .models import PostModel, PostComment
 from .utils import BlogMixin
 
 
@@ -93,3 +96,19 @@ class AddPost(LoginRequiredMixin, CreateView, DataMixin, BlogMixin):
         form.instance.author = self.request.user
         form.instance.img = self.request.FILES
         return super().form_valid(form)
+
+
+class DelPost(DeleteView):
+    model = PostModel
+    template_name = 'blog/post_delete.html'
+    success_url = reverse_lazy('home')
+    context_object_name = "post"
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.author == request.user:
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            return HttpResponseBadRequest()
