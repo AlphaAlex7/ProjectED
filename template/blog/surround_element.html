@@ -1,36 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="row">
-        <div id="cat_menu" class="col-md-2">
-
-            <div>
-                <div class="rounded-2">
-                    <div class="text-center">
-                        <a>Категории</a>
-                    </div>
-                    <div class="m-1">
-                        <ul class="list-unstyled">
-                            {% for cat in category %}
-                                <li class="p-0 w-auto" id="{{ cat.id }}">
-                                    <a type="button"
-                                       class="text-decoration-none text-dark btn btn-outline-light border-0 w-100 p-1"
-                                       href="{% url 'blog:cat_posts' cat=cat.id %}">
-                                        <p class="{% if cat.id == cat_select_id %}text-secondary{% endif %} mb-auto"
-                                           style="line-height: 1rem">{{ cat.title }}</p></a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+<div class="row">
+    <div id="cat_menu" class="col-md-2 p-1">
+        <div>
+            <div class="rounded-2">
+                <div class="text-center">
+                    <a>Категории</a>
+                </div>
+                <div class="m-1">
+                    <ul class="list-unstyled">
+                        {% for cat in category %}
+                        <li class="p-0 w-auto" id="{{ cat.id }}">
+                            <a type="button"
+                               class="text-decoration-none text-dark btn btn-outline-light border-0 w-100 p-1"
+                               href="{% url 'blog:cat_posts' cat=cat.id %}">
+                                <p class="{% if cat.id == cat_select_id %}text-secondary{% endif %} mb-auto"
+                                   style="line-height: 1rem">
+                                    {{ cat.title }}
+                                </p>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
-        {% block page_content %}
-            <div class="col-md-8">
-                <div class="container">
-                    <p>Что то не так</p>
+    </div>
+    {% block page_content %}
+    <div class="col-md-8">
+        <div class="container">
+            <p>Что то не так</p>
+        </div>
+    </div>
+    {% endblock %}
+    <div id="action_button" class="col-md-2 p-1">
+        <div>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative h-100 bg-white">
+                <div class="text-center">
+                     <div class="m-1">
+                    <ul class="list-unstyled">
+                        {% for action in actions %}
+                        <li class="p-0 w-auto" id="{{ action.id }}">
+                            <a type="button"
+                               class="text-decoration-none {% if action.href %} text-dark {% else %} text-secondary {% endif %} btn btn-outline-light border-0 w-100 p-1"
+                               {% if action.href %} href="{% url action.href %}" {% endif %}>
+                                <p class="mb-auto"
+                                   style="line-height: 1rem">
+                                    {{ action.title }}
+                                </p>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 </div>
             </div>
-        {% endblock %}
+        </div>
     </div>
+</div>
 {% endblock %}

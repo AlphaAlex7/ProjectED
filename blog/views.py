@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from ProjectED.utils import DataMixin
@@ -43,14 +43,20 @@ class PostOneView(DetailView, DataMixin, BlogMixin):
         context = super().get_menu_context(**context, title="Статьи")
         context = super().all_blog_context(**context)
 
-        paginator = Paginator(PostComment.objects.filter(post=self.kwargs['pk']), 10)
+        comment_paginate_by = 10
+        paginator = Paginator(PostComment.objects.filter(post=self.kwargs['pk']), comment_paginate_by)
         if "page" in self.request.GET:
             page_num = self.request.GET.get("page")
         else:
             page_num = 1
         page = paginator.get_page(page_num)
+
+        print(kwargs["object"].get_comment_counts())
+
         context["page_obj"] = page
         context["comments"] = page.object_list
+        context["paginator"] = page.paginator
+        context["is_paginated"] = (comment_paginate_by < kwargs["object"].get_comment_counts())
         context["form_comment"] = AddCommentForm()
 
         return context
@@ -112,3 +118,19 @@ class DelPost(DeleteView):
             return HttpResponseRedirect(success_url)
         else:
             return HttpResponseBadRequest()
+
+
+class UpdatePost(UpdateView, DataMixin, BlogMixin):
+    model = PostModel
+    template_name = "blog/post_add.html"
+    form_class = AddPostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = super().get_menu_context(**context, title="Редактировать статью")
+        context = super().all_blog_context(**context)
+        context["user"] = self.request.user
+        context["edit"] = True
+
+        print(context)
+        return context

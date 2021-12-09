@@ -33,7 +33,9 @@ class AddPostForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class":
-                    "form-control"
+                    "form-control",
+                "style":
+                    "height:150px"
             }
         )
     )
@@ -49,7 +51,9 @@ class AddCommentForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "class":
-                    "form-control"
+                    "form-control",
+                "style":
+                    "height:100px"
             }
         )
     )

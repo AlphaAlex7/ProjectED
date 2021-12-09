@@ -3,46 +3,66 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block page_content %}
-    <div class="col-md-8">
-        <div class="row" style="background: #ffffff">
-            <div class="rounded-3 border-2 border-primary mx-3 my-2" style="border: solid; width: auto">{{ user }}</div> {# надо это убрать в угол #}
-            <form class="needs-validation" method="post" enctype="multipart/form-data" >
-                {% csrf_token  %}
-                {% for field in form %}
+<div class="col-md-8">
+    <div class="row mb-2 justify-content-center">
+        <div class="col-md-11 p-1">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row shadow-sm position-relative h-100 bg-white px-3 pb-3"
+                 style="background: #ffffff">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <div class="col-md-12 text-end">
+                        <a class="rounded-3 border-2 border-primary px-2 pb-1 my-2 text-decoration-none"
+                           style="border: solid; width: auto">
+                            {{ user }}
+                        </a>
+                        {% if edit %}
+                        <a class="rounded-3 border-2 border-warning text-warning px-2 pb-1 my-2 text-decoration-none"
+                           style="border: solid; width: auto">
+                            Редактирование
+                        </a>
+                        {% else %}
+                        <a class="rounded-3 border-2 border-info text-info px-2 pb-1 my-2 text-decoration-none"
+                           style="border: solid; width: auto">
+                            Создание
+                        </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+                <!--            <div class="rounded-3 border-2 border-primary mx-3 my-2" style="border: solid; width: auto">{{ user }}</div> {# надо это убрать в угол #}-->
+                <form class="needs-validation" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
 
                     <div class="mb-3">
 
-                        <label class="mb-2" for="address">{{ field.label_tag }}</label>
+                        <label class="mb-2" for="address">
+                            {{ field.label_tag }}
+                        </label>
                         {{ field }}
                         <div class="invalid-feedback">
                             {% if field.errors %}
                             {% for error in field.errors %}
-                                <div class="alert alert-danger">
-                                    {{ error }}
-                                </div>
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
                             {% endfor %}
-                        {% endif %}
+                            {% endif %}
                         </div>
 
                     </div>
-                {% endfor %}
-                {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <div class="mb-3">
-                            <label class="mb-2 text-danger">{{ error }}</label>
-                            </div>
-                        {% endfor %}
+                    {% endfor %}
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <div class="mb-3">
+                        <label class="mb-2 text-danger">{{ error }}</label>
+                    </div>
+                    {% endfor %}
 
                     {% endfor %}
-                <input class="btn btn-outline-success" type="submit" value="Добавить">
-            </form>
-            {#            <div class="comment_body">#}
-            {#                <h2> {{ article.article_title }}</h2>#}
-            {#                <p>{{ article.article_text }}</p>#}
-            {#            </div>#}
-            {#            <div class="comment_date">#}
-            {#                <em>{{ article.pub_date }}</em>#}
-            {#            </div>#}
+                    <input class="btn btn-outline-success" type="submit" value="Добавить">
+                </form>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -16,12 +16,11 @@
                                         </div>
                                         {% if user.id == post.author.id %}
                                         <div class="col-md-auto mb-1 justify-content-center text-end">
-                                            <a>
-                                                <img src="{% static 'icon/svg/fi-rr-pencil.svg' %}" class="bi me-2" width="15"
-                                             height="15" role="img" title="Редактировать">
-                                            </a>
-                                            <a href="{% url 'blog:del' post.pk %}" >
-                                                <img src="{% static 'icon/svg/fi-rr-cross.svg' %}" class="bi me-2" width="15"
+                                            <a class="text-decoration-none btn btn-outline-primary border-0 p-1 pt-0" href="{% url 'blog:edit' post.pk %}" >
+                                                <img src="{% static 'icon/svg/fi-rr-pencil.svg' %}" width="15"
+                                             height="15" role="img" title="Редактировать"></a>
+                                            <a class="text-decoration-none btn btn-outline-primary border-0 p-1 pt-0" href="{% url 'blog:del' post.pk %}" >
+                                                <img src="{% static 'icon/svg/fi-rr-cross.svg' %}" width="15"
                                              height="15" role="img" title="Удалить">
                                             </a>
                                         </div>
@@ -31,17 +30,17 @@
                                         <p class="d-inline-block mb-2 text-dark">{{ post.author.username }} </p>
                                         <p class="d-inline-block text-secondary">{{ post.date_pub|date:"d.M H:i" }}</p>
                                     </div>
-                                    <div class="position-relative">
+                                    <div class="position-relative text-decoration-none text-dark btn btn-outline-light border-0 w-100 text-start mb-1">
                                         <h3 class="mb-0">{{ post.title }}</h3>
                                         <div class="mb-1 text-muted"></div>
-                                        <p class="text-justify mb-auto h-50">{{ post.text|truncatewords:30 }}</p>
+                                        <p class="text-justify mb-auto h-50">{{ post.text|truncatechars:60 }}</p>
                                         <a href="{% url 'blog:detail' post.pk %}" class="stretched-link"></a>
+                                    </div>
                                         <a>
                                             <img src="{% static 'icon/svg/fi-rr-comment.svg' %}" class="bi me-2" width="20"
                                                  height="20" role="img" title="Комментарии">
                                             {{ post.get_comment_counts }}
                                         </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
