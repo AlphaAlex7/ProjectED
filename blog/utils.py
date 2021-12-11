@@ -4,26 +4,28 @@ from .models import PostCategory
 class BlogMixin:
     def all_blog_context(self, **kwargs):
         context = self.add_category_to_context(**kwargs)
-        context = self.add_action_button(**context)
+        # context = self.add_action_button(**context)
         return context
 
-    def add_action_button(self, **kwargs):
-        action_button = [
-            {
-                "title": "Мой аккаунт",
-                "id": "my_page",
-                "href": "",
-                "hiden": True,
-            },
-            {
-                "title": "Добавить статью",
-                "id": "add_article",
-                "href": "blog:add_post",
-                "hiden": False,
-            }
-        ]
-        kwargs["actions"] = action_button
-        return kwargs
+    # def add_action_button(self, **kwargs):
+    #     action_button = [
+    #         {
+    #             "title": "Мой аккаунт",
+    #             "id": "my_page",
+    #             "href": "",
+    #             "param": "",
+    #             "hiden": True,
+    #         },
+    #         {
+    #             "title": "Добавить статью",
+    #             "id": "add_article",
+    #             "href": "blog:add_post",
+    #             "param": "",
+    #             "hiden": False,
+    #         }
+    #     ]
+    #     kwargs["actions"] = action_button
+    #     return kwargs
 
     def add_category_to_context(self, **kwargs):
         if kwargs is None:

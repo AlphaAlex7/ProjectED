@@ -70,7 +70,6 @@ class PostAllView(ListView, DataMixin, BlogMixin):
     context_object_name = "posts"
 
     def get_queryset(self):
-        print(self.request.resolver_match.kwargs)
         if self.request.resolver_match.kwargs.get("cat"):
             query_set = self.model.objects.filter(category=self.request.resolver_match.kwargs["cat"])
         else:
@@ -81,7 +80,6 @@ class PostAllView(ListView, DataMixin, BlogMixin):
         context = super().get_context_data(**kwargs)
         context = super().get_menu_context(**context, title="Статьи")
         context = super().all_blog_context(**context)
-        print(context.get("paginator").__dict__)
         return context
 
 

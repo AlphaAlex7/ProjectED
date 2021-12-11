@@ -40,18 +40,29 @@
                 <div class="text-center">
                      <div class="m-1">
                     <ul class="list-unstyled">
-                        {% for action in actions %}
-                        <li class="p-0 w-auto" id="{{ action.id }}">
+                        <li class="p-0 w-auto" id="my_page">
                             <a type="button"
-                               class="text-decoration-none {% if action.href %} text-dark {% else %} text-secondary {% endif %} btn btn-outline-light border-0 w-100 p-1"
-                               {% if action.href %} href="{% url action.href %}" {% endif %}>
+                               class="text-decoration-none text-dark btn btn-outline-light border-0 w-100 p-1"
+                               href="{% url 'account:account_detail' pk=user.id %}">
                                 <p class="mb-auto"
                                    style="line-height: 1rem">
-                                    {{ action.title }}
+                                    Мой аккаунт
                                 </p>
                             </a>
                         </li>
-                        {% endfor %}
+                        {% url 'blog:add_post' as the_url %}
+                        {% if request.get_full_path != the_url %}
+                        <li class="p-0 w-auto" id="add_article">
+                            <a type="button"
+                               class="text-decoration-none text-dark btn btn-outline-light border-0 w-100 p-1"
+                               href="{% url 'blog:add_post' %}">
+                                <p class="mb-auto"
+                                   style="line-height: 1rem">
+                                    Добавить статью
+                                </p>
+                            </a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
                 </div>
