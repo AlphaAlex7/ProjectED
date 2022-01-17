@@ -11,9 +11,9 @@ from blog.models import PostModel
 
 
 class Registration(CreateView, DataMixin):
-    template_name = "account/account.html"
+    template_name = "account/registration.html"
     form_class = RegistrationForms
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('account:login')
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -23,7 +23,7 @@ class Registration(CreateView, DataMixin):
                 user.save()
                 user_group = Group.objects.get(name='user')
                 user.groups.add(user_group)
-                return redirect('login')
+                return redirect('account:login')
         else:
             print(form.__dict__)
             return render(request, self.template_name, {'form': form})
