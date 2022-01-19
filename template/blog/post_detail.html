@@ -14,7 +14,7 @@
                         {% if post.img_preview %}
                         <img class="img-fluid p-3" src="{{ post.img_preview.url }}" alt="lk">
                         {% endif %}
-                        <p>{{ post.text }}</p>
+                        <pre>{{ post.text }}</pre>
                     </div>
                     <div class="text-end text-muted">
                         <small>{{ post.date_pub }}</small>
@@ -109,8 +109,8 @@
                     <h3>Вы не вошли</h3>
                     <p>Только авторизованные пользователи могут оставить комментарий.</p>
                     <p>Войдите или зарегестрируйтесь</p>
-                    <a href="{% url 'login' %}" type="button" class="btn btn-outline-primary me-2">Вход</a>
-                    <a href="{% url 'registration' %}" class="btn btn-primary">Регистрация</a>
+                    <a href="{% url 'account:login' %}" type="button" class="btn btn-outline-primary me-2">Вход</a>
+                    <a href="{% url 'account:registration' %}" class="btn btn-primary">Регистрация</a>
                 </div>
                 {% endif %}
             </div>

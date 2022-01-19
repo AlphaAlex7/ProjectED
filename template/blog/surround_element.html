@@ -5,11 +5,21 @@
         <div id="cat_menu" class="col-md-2 p-1">
             <div>
                 <div class="rounded-2">
-                    <div class="text-center">
+                    <div class="text-center border-bottom">
                         <a>Категории</a>
                     </div>
                     <div class="m-1">
                         <ul class="list-unstyled">
+                            <li class="p-0 w-auto" id="0">
+                                <a type="button"
+                                   class="text-decoration-none text-dark btn btn-outline-light border-0 w-100 p-1"
+                                   href="{% url 'blog:cat_posts' cat=0 %}">
+                                    <p class="{% if cat_select_id == 0 %}text-secondary{% endif %} mb-auto"
+                                       style="line-height: 1rem">
+                                        Все категории
+                                    </p>
+                                </a>
+                            </li>
                             {% for cat in category %}
                                 <li class="p-0 w-auto" id="{{ cat.id }}">
                                     <a type="button"
