@@ -7,3 +7,5 @@ django-redis
 django-celery-beat
 django-celery-results
 pillow
+parameterized
+django-debug-toolbar

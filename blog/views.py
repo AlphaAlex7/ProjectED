@@ -39,7 +39,7 @@ class PostOneView(DetailView, DataMixin, BlogMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
+        # print(context)
         context = super().get_menu_context(**context, title="Статьи")
         context = super().all_blog_context(**context)
 
@@ -51,12 +51,12 @@ class PostOneView(DetailView, DataMixin, BlogMixin):
             page_num = 1
         page = paginator.get_page(page_num)
 
-        print(kwargs["object"].get_comment_counts())
+        # print(page.paginator.count)
 
         context["page_obj"] = page
         context["comments"] = page.object_list
         context["paginator"] = page.paginator
-        context["is_paginated"] = (comment_paginate_by < kwargs["object"].get_comment_counts())
+        context["is_paginated"] = (comment_paginate_by < page.paginator.count)
         context["form_comment"] = AddCommentForm()
 
         return context
@@ -74,6 +74,7 @@ class PostAllView(ListView, DataMixin, BlogMixin):
             query_set = self.model.objects.filter(category=self.request.resolver_match.kwargs["cat"])
         else:
             query_set = self.model.objects.all()
+        query_set = query_set.select_related("author").select_related("category").prefetch_related("post_id")
         return query_set
 
     def get_context_data(self, **kwargs):
@@ -93,7 +94,7 @@ class AddPost(LoginRequiredMixin, CreateView, DataMixin, BlogMixin):
         context = super().all_blog_context(**context)
         context["user"] = self.request.user
 
-        print(context)
+        # print(context)
         return context
 
     def form_valid(self, form):
@@ -130,5 +131,5 @@ class UpdatePost(UpdateView, DataMixin, BlogMixin):
         context["user"] = self.request.user
         context["edit"] = True
 
-        print(context)
+        # print(context)
         return context

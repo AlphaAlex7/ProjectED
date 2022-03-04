@@ -27,8 +27,9 @@ class PostModel(models.Model):
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={"pk": self.pk})
 
+    @property
     def get_comment_counts(self):
-        return PostComment.objects.filter(post=self.pk).count()
+        return self.post_id.count()
 
     def __str__(self):
         return self.title

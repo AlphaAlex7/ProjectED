@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'blog',
     'account',
     'django_celery_beat',
-    'django_celery_results'
+    'django_celery_results',
+    "debug_toolbar"
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'ProjectED.urls'
@@ -137,3 +139,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 100000000
 FILE_UPLOAD_TEMP_DIR = os.path.join(BASE_DIR, "media")
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

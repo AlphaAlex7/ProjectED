@@ -27,6 +27,7 @@ urlpatterns = [
     path('posts/', include("blog.urls")),
 
     path('', RedirectView.as_view(url='/posts/'), name="home"),
+    path('__debug__/', include('debug_toolbar.urls')),
 
 ]
 
