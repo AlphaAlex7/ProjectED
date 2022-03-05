@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import *
 
 
@@ -26,7 +28,8 @@ class AddPostForm(forms.ModelForm):
                 "class":
                     "form-control d-block w-50"
             }
-        )
+        ),
+        error_messages={"required":"{E{"}
     )
 
     text = forms.CharField(

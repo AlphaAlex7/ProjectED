@@ -6,6 +6,7 @@ Celery
 django-redis
 django-celery-beat
 django-celery-results
-pillow
+pillow==8.0
+psycopg2-binary==2.8.5
 parameterized
 django-debug-toolbar

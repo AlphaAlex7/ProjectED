@@ -8,7 +8,6 @@ from django.db import connection, reset_queries
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ProjectED.settings')
 django.setup()
-
 from django.db.models import Q
 from django.contrib.auth.models import User, Group, Permission, make_password
 from blog.models import PostModel, PostComment, PostCategory

@@ -1,4 +1,4 @@
-from blog.models import PostCategory
+
 
 menu = [{'title': "Главная", 'url_name': '/posts/'},
         {'title': "Блог", 'url_name': '/posts/'},

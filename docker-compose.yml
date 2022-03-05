@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8080:8000"
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=ProjectED
+      - SQL_USER=Alpha
+      - SQL_PASSWORD=AlphaPass
+      - SQL_HOST=db
+      - SQL_PORT=5432
+    depends_on:
+      - redis
+      - db
+
+  celery:
+    build: .
+    command: celery -A ProjectED worker -l INFO
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=ProjectED
+      - SQL_USER=Alpha
+      - SQL_PASSWORD=AlphaPass
+      - SQL_HOST=db
+      - SQL_PORT=5432
+    depends_on:
+      - web
+      - redis
+      - db
+
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - ./db_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=Alpha
+      - POSTGRES_PASSWORD=AlphaPass
+      - POSTGRES_DB=ProjectED

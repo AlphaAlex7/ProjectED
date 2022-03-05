@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from .tasks import create_new_comment
 from ProjectED.utils import DataMixin
 from .forms import AddPostForm, AddCommentForm
 from .models import PostModel, PostComment
@@ -42,7 +43,7 @@ class PostOneView(DetailView, DataMixin, BlogMixin):
         # print(context)
         context = super().get_menu_context(**context, title="Статьи")
         context = super().all_blog_context(**context)
-
+        create_new_comment.delay(self.kwargs['pk'])
         comment_paginate_by = 10
         paginator = Paginator(PostComment.objects.filter(post=self.kwargs['pk']), comment_paginate_by)
         if "page" in self.request.GET:
