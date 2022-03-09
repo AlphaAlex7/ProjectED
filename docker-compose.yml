@@ -20,6 +20,7 @@ services:
       - SQL_PASSWORD=AlphaPass
       - SQL_HOST=db
       - SQL_PORT=5432
+      - DOCKER=True
     depends_on:
       - redis
       - db
@@ -36,6 +37,25 @@ services:
       - SQL_PASSWORD=AlphaPass
       - SQL_HOST=db
       - SQL_PORT=5432
+      - DOCKER=True
+    depends_on:
+      - web
+      - redis
+      - db
+
+  celery_beat:
+    build: .
+    command: celery -A ProjectED beat
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=ProjectED
+      - SQL_USER=Alpha
+      - SQL_PASSWORD=AlphaPass
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - DOCKER=True
     depends_on:
       - web
       - redis
