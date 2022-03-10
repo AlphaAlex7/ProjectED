@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.db.models import Count
 import random
 from ProjectED import settings
-from ProjectED.celery_Init import app
+from ProjectED.celery_init import app
 from .models import PostComment, PostModel, PostCategory
 from django.contrib.auth.models import User
 from random import choice
