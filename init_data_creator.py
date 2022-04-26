@@ -3,7 +3,6 @@ import random
 import string
 import types
 import django
-from django.db.transaction import atomic
 from django.db import connection, reset_queries
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ProjectED.settings')
@@ -36,7 +35,8 @@ def create_test_user():
             username=name,
             email=f"{name}@pidr.net",
             password=make_password("123456"))
-        for name in name_list])
+        for name in name_list
+    ])
 
 
 def add_user_to_group():
@@ -57,7 +57,7 @@ def create_posts():
         for k, v in os.__dict__.items()
         if isinstance(v, types.FunctionType) and "_" not in k
     }
-    category_list = [i["pk"] for i in PostCategory.objects.all().values("pk")]
+    category_list_from_db = [i["pk"] for i in PostCategory.objects.all().values("pk")]
     author = [i["pk"] for i in User.objects.filter(is_superuser=False).values("pk")]
 
     PostModel.objects.bulk_create([
@@ -65,7 +65,7 @@ def create_posts():
             title=f"OS.{key}()",
             text=value.__doc__ if value.__doc__ else "empty",
             author_id=random.choice(author),
-            category_id=random.choice(category_list)
+            category_id=random.choice(category_list_from_db)
         )
         for key, value in posts.items()
     ])
@@ -77,11 +77,14 @@ def create_comment():
 
     PostComment.objects.bulk_create([
         PostComment(
-            text="".join(
-                [random.choice(list(string.ascii_letters) + [" ", ] * 10) for _ in range(random.randint(10, 100))]),
+            text="".join([
+                random.choice(list(string.ascii_letters) + [" ", ] * 10)
+                for _ in range(random.randint(10, 100))
+            ]),
             author_id=random.choice(author),
             post_id=random.choice(post_id)
-        ) for _ in range(100)
+        )
+        for _ in range(100)
     ])
 
 

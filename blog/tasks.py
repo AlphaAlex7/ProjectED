@@ -27,18 +27,28 @@ def create_new_comment(post_id):
 def send_stat_for_me():
     count_all_post = PostModel.objects.all().count()
     count_all_comment = PostComment.objects.all().count()
-    user_stat = User.objects.values("username"). \
-        annotate(posts=Count("author", distinct=True), comment=Count("author_comment", distinct=True))
-    filter_post = lambda x: x.get("posts")
-    filter_comment = lambda x: x.get("comment")
+
+    user_stat = User.objects.values("username").annotate(
+        posts=Count("author", distinct=True),
+        comment=Count("author_comment", distinct=True)
+    )
+
     send_string = f"Всего постов: {count_all_post}, Всего комментариев: {count_all_comment}\n"
     send_string += "\n\nРейтинг по постам:\n"
-    send_string += "\n".join(
-        [f"  {i.get('username'):<20} : {i.get('posts')}" for i in sorted(user_stat, key=filter_post, reverse=True)])
+
+    send_string += "\n".join([
+        f"{i.get('username'):<20} : {i.get('posts')}"
+        for i in sorted(user_stat, key=lambda x: x.get("posts"), reverse=True)
+    ])
+
     send_string += "\n\nРейтинг по комментариям:\n"
-    send_string += "\n".join(
-        [f"  {i.get('username'):<20} : {i.get('comment')}" for i in sorted(user_stat, key=filter_comment, reverse=True)])
+    send_string += "\n".join([
+        f"  {i.get('username'):<20} : {i.get('comment')}"
+        for i in sorted(user_stat, key=lambda x: x.get("comment"), reverse=True)
+    ])
+
     send_mail('ТЕСТ стат', send_string, settings.EMAIL_HOST_USER, ['a03791986@gmail.com'])
+
 
 @app.task
 def add_comment():
@@ -47,28 +57,34 @@ def add_comment():
 
     PostComment.objects.bulk_create([
         PostComment(
-            text="".join(
-                [random.choice(list(string.ascii_letters) + [" ", ] * 10) for _ in range(random.randint(10, 100))]),
+            text="".join([
+                random.choice(list(string.ascii_letters) + [" ", ] * 10)
+                for _ in range(random.randint(10, 100))
+            ]),
             author_id=random.choice(author),
             post_id=random.choice(post_id)
-        ) for _ in range(random.randint(1,5))
+        )
+        for _ in range(random.randint(1, 5))
     ])
 
 
 @app.task
 def add_post():
-
     category_list = [i["pk"] for i in PostCategory.objects.all().values("pk")]
     author = [i["pk"] for i in User.objects.filter(is_superuser=False).values("pk")]
 
     PostModel.objects.bulk_create([
         PostModel(
-            title="".join(
-                [random.choice(list(string.ascii_letters) + [" ", ] * 10) for _ in range(random.randint(10, 50))]),
-            text="".join(
-                [random.choice(list(string.ascii_letters) + [" ", ] * 10) for _ in range(random.randint(100, 1000))]),
+            title="".join([
+                random.choice(list(string.ascii_letters) + [" ", ] * 10)
+                for _ in range(random.randint(10, 50))
+            ]),
+            text="".join([
+                random.choice(list(string.ascii_letters) + [" ", ] * 10)
+                for _ in range(random.randint(100, 1000))
+            ]),
             author_id=random.choice(author),
             category_id=random.choice(category_list)
         )
-        for _ in range(random.randint(1,5))
+        for _ in range(random.randint(1, 5))
     ])

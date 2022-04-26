@@ -29,7 +29,6 @@ class AddPostForm(forms.ModelForm):
                     "form-control d-block w-50"
             }
         ),
-        error_messages={"required":"{E{"}
     )
 
     text = forms.CharField(
@@ -64,13 +63,3 @@ class AddCommentForm(forms.ModelForm):
     class Meta:
         model = PostComment
         fields = ('text',)
-# 3
-# 4
-# 5
-#
-# from django import forms
-#
-#
-# class UserForm(forms.Form):
-#     name = forms.CharField(widget=forms.TextInput(attrs={"class": "myfield"}))
-#     age = forms.IntegerField(widget=forms.NumberInput(attrs={"class": "myfield"}))

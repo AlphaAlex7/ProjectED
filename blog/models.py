@@ -16,13 +16,37 @@ class PostCategory(models.Model):
 
 
 class PostModel(models.Model):
-    title = CharField(verbose_name="Заголовок", max_length=200)
+    title = CharField(
+        verbose_name="Заголовок",
+        max_length=200
+    )
     text = TextField(verbose_name="Текст")
-    date_pub = DateTimeField(verbose_name="Дата публикации", auto_now_add=True)
-    author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author")
-    category = ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, verbose_name="Категория",
-                          related_name="category_post")
-    img_preview = ImageField(upload_to='posts/preview/%Y/%m/%d', null=True, blank=True)
+
+    date_pub = DateTimeField(
+        verbose_name="Дата публикации",
+        auto_now_add=True
+    )
+
+    author = ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Автор",
+        related_name="author"
+    )
+
+    category = ForeignKey(
+        PostCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name="Категория",
+        related_name="category_post"
+    )
+
+    img_preview = ImageField(
+        upload_to='posts/preview/%Y/%m/%d',
+        null=True,
+        blank=True
+    )
 
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={"pk": self.pk})
@@ -41,10 +65,24 @@ class PostModel(models.Model):
 
 
 class PostComment(models.Model):
-    author = ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="author_comment")
+    author = ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Автор",
+        related_name="author_comment"
+    )
     text = TextField(verbose_name="Комментарий")
-    date_pub = DateTimeField(verbose_name="Дата публикации", auto_now_add=True)
-    post = ForeignKey(PostModel, on_delete=models.CASCADE, verbose_name="Пост", related_name="post_id")
+
+    date_pub = DateTimeField(
+        verbose_name="Дата публикации",
+        auto_now_add=True
+    )
+    post = ForeignKey(
+        PostModel,
+        on_delete=models.CASCADE,
+        verbose_name="Пост",
+        related_name="post_id"
+    )
 
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={"pk": self.post_id})

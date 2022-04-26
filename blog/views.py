@@ -7,7 +7,6 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from .tasks import create_new_comment
 from ProjectED.utils import DataMixin
 from .forms import AddPostForm, AddCommentForm
 from .models import PostModel, PostComment
@@ -37,27 +36,24 @@ class PostOneView(DetailView, DataMixin, BlogMixin):
     model = PostModel
     template_name = "blog/post_detail.html"
     context_object_name = "post"
+    comment_paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # print(context)
         context = super().get_menu_context(**context, title="Статьи")
         context = super().all_blog_context(**context)
-        create_new_comment.delay(self.kwargs['pk'])
-        comment_paginate_by = 10
-        paginator = Paginator(PostComment.objects.filter(post=self.kwargs['pk']), comment_paginate_by)
-        if "page" in self.request.GET:
-            page_num = self.request.GET.get("page")
-        else:
-            page_num = 1
-        page = paginator.get_page(page_num)
 
-        # print(page.paginator.count)
+        paginator = Paginator(
+            object_list=PostComment.objects.filter(post=self.kwargs['pk']),
+            per_page=self.comment_paginate_by
+        )
+
+        page = paginator.get_page(self.request.GET.get("page", 1))
 
         context["page_obj"] = page
         context["comments"] = page.object_list
         context["paginator"] = page.paginator
-        context["is_paginated"] = (comment_paginate_by < page.paginator.count)
+        context["is_paginated"] = (self.comment_paginate_by < page.paginator.count)
         context["form_comment"] = AddCommentForm()
 
         return context
@@ -71,8 +67,9 @@ class PostAllView(ListView, DataMixin, BlogMixin):
     context_object_name = "posts"
 
     def get_queryset(self):
-        if self.request.resolver_match.kwargs.get("cat"):
-            query_set = self.model.objects.filter(category=self.request.resolver_match.kwargs["cat"])
+        print(self.kwargs)
+        if self.kwargs.get("cat"):
+            query_set = self.model.objects.filter(category=self.kwargs["cat"])
         else:
             query_set = self.model.objects.all()
         query_set = query_set.select_related("author").select_related("category").prefetch_related("post_id")
@@ -94,8 +91,6 @@ class AddPost(LoginRequiredMixin, CreateView, DataMixin, BlogMixin):
         context = super().get_menu_context(**context, title="Новая статья")
         context = super().all_blog_context(**context)
         context["user"] = self.request.user
-
-        # print(context)
         return context
 
     def form_valid(self, form):
@@ -131,6 +126,4 @@ class UpdatePost(UpdateView, DataMixin, BlogMixin):
         context = super().all_blog_context(**context)
         context["user"] = self.request.user
         context["edit"] = True
-
-        # print(context)
         return context

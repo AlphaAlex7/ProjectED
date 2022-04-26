@@ -47,9 +47,6 @@ class RegistrationForms(UserCreationForm):
         help_text="Enter the same password as before, for verification.",
     )
 
-    # def __init__(self, request, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
     class Meta:
         model = User
         fields = ('username', "email")
