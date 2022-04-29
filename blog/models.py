@@ -31,7 +31,7 @@ class PostModel(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name="Автор",
-        related_name="author"
+        related_name="author_post"
     )
 
     category = ForeignKey(
